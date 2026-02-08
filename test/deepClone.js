@@ -24,4 +24,30 @@ QUnit.module('Тестируем функцию deepClone', () => {
         assert.deepEqual(cloned, original, 'Копия массива должна быть равна оригиналу');
         assert.notStrictEqual(cloned[2], original[2], 'Вложенный объект в массиве должен быть независимым');
     });
+
+    //мои тесты
+
+    QUnit.test('Работает правильно для пустого обьекта', (assert) => {
+        const original = {};
+        const cloned = deepClone(original);
+
+        assert.deepEqual(cloned, original, 'Копия должна быть равна оригиналу');
+        assert.notStrictEqual(cloned, original, 'Вложенный объект должен быть независимым');
+    });
+
+    QUnit.test('Работает правильно для циклической ссылки', (assert) => {
+        const original = {};
+        original.self = original
+        const cloned = deepClone(original);
+
+        assert.deepEqual(cloned, original, 'Копия должна быть равна оригиналу');
+        assert.notStrictEqual(cloned, original, 'Вложенный объект должен быть независимым');
+    });
+
+    QUnit.test('Работает правильно для примитива', (assert) => {
+        const original = 5;
+        const cloned = deepClone(original);
+
+        assert.deepEqual(cloned, original, 'Копия должна быть равна оригиналу');
+    });
 });
