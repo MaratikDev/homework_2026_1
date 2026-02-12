@@ -16,29 +16,37 @@
  * 
  * @returns {*} копия объекта/массива/примитива
  */
-
-
 const deepClone = (obj, visited = new WeakMap()) => {
 
-    if (typeof obj !== 'object') return obj;
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+
+    if (obj instanceof Date) {
+        return new Date(obj);
+    }
 
     if (visited.has(obj)) {
         return visited.get(obj);
     }
 
-    if (obj instanceof Array) {
+    if (Array.isArray(obj)) {
         const arrCopy = [];
-        visited.set(obj, arrCopy); 
-        return obj.map(item => deepClone(item, visited));
+        visited.set(obj, arrCopy);
+
+        obj.forEach((item, index) => {
+            arrCopy[index] = deepClone(item, visited);
+        });
+        
+        return arrCopy;
     }
     
     const clonedObj = {};
     visited.set(obj, clonedObj); 
     
-    for (const key in obj) {
-        if (Object.hasOwn(obj, key)) {
-            clonedObj[key] = deepClone(obj[key], visited);
-        }
-    }
+    Object.entries(obj).forEach(([key, value]) => {
+        clonedObj[key] = deepClone(value, visited);
+    });
+
     return clonedObj;
 };
