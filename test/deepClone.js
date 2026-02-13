@@ -35,7 +35,7 @@ QUnit.module('Тестируем функцию deepClone', () => {
 
     QUnit.test('Работает правильно для циклической ссылки', (assert) => {
         const original = {};
-        original.self = original
+        original.self = original;
         const cloned = deepClone(original);
 
         assert.deepEqual(cloned, original, 'Копия должна быть равна оригиналу');
